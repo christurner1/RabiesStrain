@@ -7,15 +7,13 @@ Created on Thu May 27 11:21:09 2021
 
 import numpy as np
 import matplotlib.pyplot as plt
-import math
-import scipy as sp
 import pandas as pd
 from scipy.integrate import odeint
-from scipy.optimize import minimize
+from lmfit import minimize, Parameters, report_fit
 
 # reading csv files
 Eyam_Data =  pd.read_csv('eyam.data', sep=",")
-#print(Eyam_Data)
+print(Eyam_Data)
 
 #labeling the data columns
 Eyam_Data.columns = ['Days', 'Susceptibles', 'Infectives']
@@ -100,7 +98,7 @@ plt.title('Eyam Data')
 plt.show()
 
 
-#%% Preliminaries prior to model validation. Attempting to curve fit using scipy optimize function minimize
+#%% Preliminaries prior to model validation. Attempting to curve fit using lmfit
 """
 This is my test SIR model for the Eyam data. Using a built-in curve fitting function minimize and the data itself. Actively working on this
 """
@@ -129,48 +127,68 @@ S0 = N - I0 - R0
 Still need a proper method for an initial guess for gamma and beta. I have a ratio, but no clear way to estimate gamma.
 """
 
+'''
 # Contact rate, beta, and mean recovery rate, gamma.
 beta, gamma = 0.05, 3 # These are initial guesses
+'''
+
+'''
+# Initial conditions vector
+y0 = S0, I0, R0
+initial_conditions = [S0, I0, R0]
+'''
 
     
-#can probably move this when I get a fully working parameter estimation/optimization done.
-params = [beta, gamma]
-initial_conditions = [S0, I0, R0]
+# Setting parameters. Note that we can place bounds on values if need be.
+params = Parameters()
+params.add('beta', value = 0.05, min = 0, max = 10) # contact rate
+params.add('gamma', value = 3, min = 0, max = 10) # mean recovery rate
+params.add('S0', value = S_0) # Initial number of susceptibles
+params.add('I0', value = I_0) # Initial number of infectives
+params.add('R0', value = 0) # Initial number of recovered, typically 0
 
 
 # A grid of time points (in days)
 t = np.linspace(0, Time, Time)
 
-
-# The SIR model differential equations.
-def derivcurvetest(y, t, N, beta, gamma):
-    S, I, R = y
+def f(y, t, ps):
+    """
+    The SIR model differential equations with parameters builtin. Will adjust for larger, more complex models.
+    """
+    beta = ps['beta'].value
+    gamma = ps['gamma'].value
     dSdt = -beta * S * I 
     dIdt = beta * S * I  - gamma * I
     dRdt = gamma * I
     return dSdt, dIdt, dRdt
 
 
+# Integrate the SIR equations over the time grid, t. A function is easier to use when trying to calculate residuals.
+def g(y, t, ps):
+    """
+    The solution to the ODE f(y, t, ps). 
+    """
+    ret = odeint(f, y, t, args = (ps,))
+    return ret
+
+#S, I, R = ret.T
 
 # To calculate the residuals of the data versus what the model predicts. Need this to minimize error and for a better fit. 
 # This compares the modeled infectives versus actual infectives. 
-def residuals(params, initial_conditions, t):
-    sol = odeint(derivcurvetest, initial_conditions, t, args = (N, beta, gamma))
-    return sol # need to either fix the data to match the same size as sol or some other method
+def residuals(ps, t, data):
+    y = ps['S0'].value, ps['I0'].value, ps['R0'].value
+    sol = g(y, t, params)
+    return (sol-data).ravel() # need to either fix the data to match the same size as sol or some other method
 
+#result = minimize(residuals, params, args = (t, Eyam_Data), method = 'leastsq') #need to fix the Eyam_Data so that a comparison can happen
+#report_fit(result)
     
-    
-print(residuals(params, initial_conditions, t))
+#print(residuals(params, initial_conditions, t, Eyam_Data))
 
-# Initial conditions vector
-y0 = S0, I0, R0
-# Integrate the SIR equations over the time grid, t.
-ret = odeint(derivcurvetest, y0, t, args=(N, beta, gamma))
-S, I, R = ret.T
+
 #%% The model that works and should not be changed in any way.
 """
-This is a good, working SIR model with given parameters. This model does not use
-vital dynamics, i.e. no birth or death rate for a population. Don't Change!!!
+This is a good, working SIR model with given parameters. This model does not use vital dynamics, i.e. no birth or death rate for a population. Don't Change!!!
 """
 
 # Total population, N.
