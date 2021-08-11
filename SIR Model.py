@@ -18,6 +18,10 @@ print(Eyam_Data)
 #labeling the data columns
 Eyam_Data.columns = ['Days', 'Susceptibles', 'Infectives']
 
+# Seperating the data into individual columns for comparison for the residuals.
+Sus = Eyam_Data['Susceptibles']
+Inf = Eyam_Data['Infectives']
+
 # initial number of Susceptibles
 S_0 = Eyam_Data.iloc[0,1] 
 #print(S_0)
@@ -153,7 +157,7 @@ t = np.linspace(0, Time, Time)
 
 def f(y, t, ps):
     """
-    The SIR model differential equations with parameters builtin. Will adjust for larger, more complex models.
+    The SIR model differential equations with parameters built-in. Will adjust for larger, more complex models.
     """
     beta = ps['beta'].value
     gamma = ps['gamma'].value
@@ -166,20 +170,28 @@ def f(y, t, ps):
 # Integrate the SIR equations over the time grid, t. A function is easier to use when trying to calculate residuals.
 def g(y, t, ps):
     """
-    The solution to the ODE f(y, t, ps). 
+    The solution to the ODE f(y, t, ps) from above. Shouldn't have to change this going forward' 
     """
     ret = odeint(f, y, t, args = (ps,))
     return ret
 
+"""
+Probably need to build a for loop to compare the sparse Eyam Data with the results from the ODE
+"""
+print(ret)
+print(ret.shape)
 #S, I, R = ret.T
 
+'''
 # To calculate the residuals of the data versus what the model predicts. Need this to minimize error and for a better fit. 
 # This compares the modeled infectives versus actual infectives. 
 def residuals(ps, t, data):
     y = ps['S0'].value, ps['I0'].value, ps['R0'].value
-    sol = g(y, t, params)
-    return (sol-data).ravel() # need to either fix the data to match the same size as sol or some other method
+    sol = g(y, t, params)        
+    return sol #(sol-data).ravel() # need to either fix the data to match the same size as sol or some other method
+'''
 
+#residuals(params, t, Sus)
 #result = minimize(residuals, params, args = (t, Eyam_Data), method = 'leastsq') #need to fix the Eyam_Data so that a comparison can happen
 #report_fit(result)
     
