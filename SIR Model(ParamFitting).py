@@ -124,6 +124,7 @@ Days = Eyam_Data['Days']
 #N = S_0 + I_0 
 N = 1000
 
+
 # Initial number of infected and recovered individuals, I0 and R0.
 I0, R0 = 1, 0
 
@@ -131,10 +132,10 @@ I0, R0 = 1, 0
 S0 = N - I0 - R0
 
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days) for each strain.
-betatrue, gammatrue = 0.2, 1./10 # Using these as the true values to build my test data set
+betatrue, gammatrue = 0.25, .12 # Using these as the true values to build my test data set
 
 # A grid of time points (in days)
-t = np.linspace(0, 160, 160)
+t = np.linspace(0, 160, 20)
 t_span = (0,Time) # using this for the IVP solver
 #%%   
 
@@ -179,10 +180,11 @@ def residual(ps, ts, data):
 This is simply build test data to verify that the residual function is working correctly.
 """
 
+
 x0 = np.array([S0, I0, R0])
 true_params = np.array((betatrue, gammatrue))
 data = g(t, x0, true_params)
-data += np.random.normal(size=data.shape)
+data += np.random.normal(size=data.shape,scale = 45)
 
 S, I, R = data.T
 #%%
@@ -195,8 +197,8 @@ S, I, R = data.T
 #%% 
 # Setting parameters. Note that we can place bounds on values if need be.
 params = Parameters()
-params.add('beta', value = 0.01, min = 0, max = 5) # contact rate
-params.add('gamma', value = 1, min = 0, max = 5) # mean recovery rate
+params.add('beta', value = 0.01, min = 0, max = 1) # contact rate
+params.add('gamma', value = 0.01, min = 0, max = 1) # mean recovery rate
 params.add('S0', value = S0) # Initial number of susceptibles
 params.add('I0', value = I0) # Initial number of infectives
 params.add('R0', value =R0) # Initial number of recovered, typically 0
@@ -207,8 +209,14 @@ params.add('R0', value =R0) # Initial number of recovered, typically 0
 There appears to be an issue with this particular solver. It is outdated. Still showing an excess work warning. I'm attempting to use another stiff 
 ODE solver vode. Still ironing out the wrinkles. Maybe an IVP solver?
 """
+
+# x0 = [S0, I0, R0]
+# print(type(g(t,x0, params)))
+# print(type(data))
+
+
 # fit model and find predicted values
-result = minimize(residual, params, args=(t, data), method='leastsq')
+result = minimize(residual, params, args=(t, data), method='Nelder-Mead')
 final = data + result.residual.reshape(data.shape)
 
 

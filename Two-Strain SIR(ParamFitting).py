@@ -7,7 +7,7 @@ Created on Wed Jul 14 10:36:40 2021
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import odeint, RK45
+from scipy.integrate import odeint
 from lmfit import  Parameters, minimize, report_fit
 
 #%%
