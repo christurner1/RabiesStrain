@@ -65,6 +65,7 @@ GuangxiInfected = cd.loc[cd['Province'] == 'Guangxi']
 HunanInfected = cd.loc[cd['Province'] == 'Hunan']
 GuizhouInfected = cd.loc[cd['Province'] == 'Guizhou']
 GuangdongInfected = cd.loc[cd['Province'] == 'Guangdong']
+JiangxiInfected = cd.loc[cd['Province'] == 'Jiangxi']
 HubeiInfected = cd.loc[cd['Province'] == 'Hubei']
 JiangsuInfected = cd.loc[cd['Province'] == 'Jiangsu']
 HenanInfected = cd.loc[cd['Province'] == 'Henan']
@@ -98,6 +99,7 @@ GuangxiInfected = GuangxiInfected.to_numpy()
 HunanInfected = HunanInfected.to_numpy()
 GuizhouInfected = GuizhouInfected.to_numpy()
 GuangdongInfected = GuangdongInfected.to_numpy()
+JiangxiInfected = JiangxiInfected.to_numpy()
 HubeiInfected = HubeiInfected.to_numpy()
 JiangsuInfected = JiangsuInfected.to_numpy()
 HenanInfected = HenanInfected.to_numpy()
@@ -128,10 +130,10 @@ QinghaiInfected = QinghaiInfected.to_numpy()
 
 # Removing the first element, i.e. the string 'Guangxi'
 GuangxiData = np.delete(GuangxiInfected,[0])
-#GuanxiData = GuangxiData.astype(np.float64)
 HunanData = np.delete(HunanInfected,[0])
 GuizhouData = np.delete(GuizhouInfected,[0])
 GuangdongData = np.delete(GuangdongInfected,[0])
+JiangxiData = np.delete(JiangxiInfected, [0])
 HubeiData =np.delete(HubeiInfected,[0])
 JiangsuData = np.delete(JiangsuInfected,[0])
 HenanData = np.delete(HenanInfected,[0])
@@ -166,6 +168,7 @@ GuangxiPop = cp.loc[cp['Province'] == 'Guangxi']
 HunanPop = cp.loc[cp['Province'] == 'Hunan']
 GuizhouPop = cp.loc[cp['Province'] == 'Guizhou']
 GuangdongPop = cp.loc[cp['Province'] == 'Guangdong']
+JiangxiPop = cp.loc[cp['Province'] == 'Jiangxi']
 HubeiPop = cp.loc[cp['Province'] == 'Hubei']
 JiangsuPop = cp.loc[cp['Province'] == 'Jiangsu']
 HenanPop = cp.loc[cp['Province'] == 'Henan']
@@ -199,6 +202,7 @@ GuangxiPop = GuangxiPop.to_numpy()
 HunanPop = HunanPop.to_numpy()
 GuizhouPop = GuizhouPop.to_numpy()
 GuangdongPop = GuangdongPop.to_numpy()
+JiangxiPop = JiangxiPop.to_numpy()
 HubeiPop = HubeiPop.to_numpy()
 JiangsuPop = JiangsuPop.to_numpy()
 HenanPop = HenanPop.to_numpy()
@@ -232,6 +236,7 @@ GuangxiPopData = np.delete(GuangxiPop,[0])
 HunanPopData = np.delete(HunanPop,[0])
 GuizhouPopData = np.delete(GuizhouPop,[0])
 GuangdongPopData = np.delete(GuangdongPop,[0])
+JiangxiPopData = np.delete(JiangxiPop,[0])
 HubeiPopData =np.delete(HubeiPop,[0])
 JiangsuPopData = np.delete(JiangsuPop,[0])
 HenanPopData = np.delete(HenanPop,[0])
@@ -260,60 +265,25 @@ NingxiaPopData = np.delete(NingxiaPop,[0])
 QinghaiPopData = np.delete(QinghaiPop,[0])
 
 #%%
-
-'''
-This is just to see if I need to convert each array to a float or tuple or what.
-'''
-# Removing the first element, i.e. the string 'Guangxi'
-#GuangxiPopData = GuangxiPopData.astype(np.float64())
-#print(HunanPopData)
-# HunanPopData = np.delete(HunanPop,[0])
-# GuizhouPopData = np.delete(GuizhouPop,[0])
-# GuangdongPopData = np.delete(GuangdongPop,[0])
-# HubeiPopData =np.delete(HubeiPop,[0])
-# JiangsuPopData = np.delete(JiangsuPop,[0])
-# HenanPopData = np.delete(HenanPop,[0])
-# SichuanPopData = np.delete(SichuanPop,[0])
-# AnhuiPopData = np.delete(AnhuiPop,[0])
-# ShandongPopData = np.delete(ShandongPop,[0])
-# HebeiPopData = np.delete(HebeiPop,[0])
-# ChongqingPopData = np.delete(ChongqingPop,[0])
-# YunnanPopData = np.delete(YunnanPop,[0])
-# ZhejiangPopData = np.delete(ZhejiangPop,[0])
-# HainanPopData = np.delete(HainanPop,[0])
-# FujianPopData = np.delete(FujianPop,[0])
-# ShanxiPopData = np.delete(ShanxiPop,[0])
-# #ShaanxiPopData = np.delete(ShaanxiPop,[0]) # There does not appear to be Shaanxi Population Data
-# #TianjinPopData = np.delete(TianjinPop,[0]) # There does not appear to be Tianjin Population Data
-# #InnerMongoliaPopData = np.delete(InnerMongoliaPop,[0]) #There does not appear to be Inner Mongolia Population Data
-# ShanghaiPopData = np.delete(ShanghaiPop,[0])
-# BeijingPopData = np.delete(BeijingPop,[0])
-# LiaoningPopData = np.delete(LiaoningPop,[0])
-# JilinPopData = np.delete(JilinPop,[0])
-# HeilongjiangPopData = np.delete(HeilongjiangPop,[0])
-# XinjiangPopData = np.delete(XinjiangPop,[0])
-# GansuPopData = np.delete(GansuPop,[0])
-# #TibetPopData = np.delete(TibetPop,[0]) # There does not appear to be Tibet Population Data
-# NingxiaPopData = np.delete(NingxiaPop,[0])
-# QinghaiPopData = np.delete(QinghaiPop,[0])
-#%%
 # Using this to make each year in the data
 Time = np.linspace(1996, 2019, 24) #this would be my x data
-t_span = (1996,2019)
+# t_span = (1996,2019)
 
 #%% Preliminaries prior to model validation.
 """
 There is probably a faster way to evaluate each province, but for now this is the way I am doing it.
 """
 
-# Initial number of Suscepitble , S0
-S0 = GuangdongPopData[0] *10000
+# Using the average population total for our N
+N = np.average(GuangdongPopData * 10000) 
+
 # Initial number of infected and recovered individuals, I0 and R0.
 I0, R0 = GuangdongData[0], 0
-# Total population, N.
-N = S0 + I0 + R0
 
-y0 = [S0, I0] #just placing the intial values in matrix form 
+# Initial number of Suscepitble , S0
+S0 = N - I0 - R0
+
+y0 = [S0, I0, R0] #just placing the intial values in matrix form 
 # Contact rate, beta, and mean recovery rate, gamma.
 beta, gamma = 91.25/365 , 10/356# average infection rate is 1-3 months in humans, death occurs 2-10 days after symptoms
 
@@ -321,8 +291,8 @@ beta, gamma = 91.25/365 , 10/356# average infection rate is 1-3 months in humans
 #%% 
 # Setting parameters. Note that we can place bounds on values if need be.
 params = Parameters()
-params.add('beta', value = beta, min = 0, max = 100) # contact rate
-params.add('gamma', value = gamma, min = 0, max = 100) # mean recovery rate
+params.add('beta', value = beta, min = 0, max = 10000) # contact rate
+params.add('gamma', value = gamma, min = 0, max = 10000) # mean recovery rate
 params.add('S0', value = S0, vary = False) # Initial number of susceptibles
 params.add('I0', value = I0, vary = False) # Initial number of infectives
 params.add('R0', value =R0, vary = False) # Initial number of recovered, typically 0
@@ -345,8 +315,8 @@ def SIR(y, t, paras):
     # the model equations
     dSdt = -beta * S * I/N
     dIdt = beta * S * I/N  - gamma * I
-    #dRdt = gamma * I
-    return [dSdt, dIdt]
+    dRdt = gamma * I
+    return [dSdt, dIdt, dRdt]
 
 def g(t, x0, paras):
    """
@@ -356,7 +326,7 @@ def g(t, x0, paras):
    return ret
 
 def residual(ps, ts, infdata):
-    y0 = ps['S0'].value, ps['I0'].value, #ps['R0'].value
+    y0 = ps['S0'].value, ps['I0'].value, ps['R0'].value
     model = g(ts, y0, ps)
     return (model[:,1] - infdata).ravel(),# (model[:, 0] - popdata).ravel()
 
@@ -364,7 +334,7 @@ def residual(ps, ts, infdata):
 
 # plt.figure()
 # plt.scatter(Time, GuangdongData, marker = 'o', color = 'b', label = 'Number of Infected')
-# plt.scatter(Time, GuangdongPopData, marker = 'o', color = 'r', label = "Number of Susceptible/Population")
+#plt.scatter(Time, GuangdongPopData, marker = 'o', color = 'r', label = "Number of Susceptible/Population")
 
 # x0 = [S0, I0]
 # print(type(g(Time,x0, params)))
@@ -372,7 +342,7 @@ def residual(ps, ts, infdata):
 
 # fit model
 results_infected = minimize(residual, params, args = (Time, GuangdongData), method = 'Nelder-Mead') 
-results_pop = minimize(residual, params, args = (Time, GuangdongData), method = 'Nelder-Mead')
+# results_pop = minimize(residual, params, args = (Time, GuangdongData), method = 'Nelder-Mead')
 
 # check results of the fit
 data_fitted = GuangdongData + results_infected.residual.reshape(GuangdongData.shape)
@@ -385,14 +355,14 @@ ax = fig.add_subplot(111, facecolor='#dddddd', axisbelow=True)
 #ax.plot(t, I, 'r', alpha=0.5, lw=2, label='Infected')
 #ax.plot(t, R, 'g', alpha=0.5, lw=2, label='Recovered with immunity')
 
-ax.plot(Time, GuangdongPopData, 'o')
+#ax.plot(Time, GuangdongPopData * 10000, 'o')
 ax.plot(Time, GuangdongData, 'o')
 ax.plot(Time, data_fitted, '-', color = 'k', linewidth=2)
 #ax.plot(Time, pop_fitted, '-', color = 'k', linewidth=2) 
 
 ax.set_xlabel('Year')
 ax.set_ylabel('Number')
-ax.set_ylim(0,15000)
+#ax.set_ylim(0,15000)
 ax.yaxis.set_tick_params(length=0)
 ax.xaxis.set_tick_params(length=0)
 ax.grid(b=True, which='major', c='w', lw=2, ls='-')
