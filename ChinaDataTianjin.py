@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Nov 18 11:02:32 2021
+Created on Thu Apr 14 12:50:44 2022
 
-@author: chris
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 18 10:56:37 2021
-
-@author: chris
+@author: Chris
 """
 
 
@@ -258,8 +251,8 @@ ZhejiangPopData = np.delete(ZhejiangPop,[0])
 HainanPopData = np.delete(HainanPop,[0])
 FujianPopData = np.delete(FujianPop,[0])
 ShanxiPopData = np.delete(ShanxiPop,[0])
-#ShaanxiPopData = np.delete(ShaanxiPop,[0]) # There does not appear to be Shaanxi Population Data
-#TianjinPopData = np.delete(TianjinPop,[0]) # There does not appear to be Tianjin Population Data
+ShaanxiPopData = np.delete(ShaanxiPop,[0]) # There does not appear to be Shaanxi Population Data
+TianjinPopData = np.delete(TianjinPop,[0]) # There does not appear to be Tianjin Population Data
 #InnerMongoliaPopData = np.delete(InnerMongoliaPop,[0]) #There does not appear to be Inner Mongolia Population Data
 ShanghaiPopData = np.delete(ShanghaiPop,[0])
 BeijingPopData = np.delete(BeijingPop,[0])
@@ -280,13 +273,14 @@ model.
 '''
 
 #Adjusting the data for this province
-YunnanData1 = np.delete(YunnanData, [0,1,2,3])
-YunnanPopData1 = np.delete(YunnanPopData, [0,1,2,3])
-# print(YunnanData1)
-# print(YunnanPopData1)
+YunnanData1 = np.delete(TianjinData, [0,1,2,3,4,5])
+YunnanPopData1 = np.delete(TianjinPopData, [0,1,2,3,4,5])
+
 # Using this to make each year in the data
-Time = np.linspace(2000, 2019, 20) #this would be my x data
-# t_span = (1996,2019)
+Time = np.linspace(2003, 2019, 18) #this would be my x data
+print(np.size(Time))
+print(np.size(YunnanData1))
+print(np.size(YunnanPopData1))
 
 #%% Preliminaries prior to model validation.
 """
@@ -310,8 +304,8 @@ beta_dogs, gamma_dogs = 91.25/365 , 10/356 #infection rate for dog-dog interacti
 #%% 
 # Setting parameters. Note that we can place bounds on values if need be.
 params = Parameters()
-params.add('beta', value = beta, min = 0, max = 10000) # contact rate for dog-human interaction
-params.add('gamma', value = gamma, min = 0, max = 10000) # mean recovery rate for dog-human interaction
+params.add('beta', value = beta, min = 0) # contact rate for dog-human interaction
+params.add('gamma', value = gamma, min = 0) # mean recovery rate for dog-human interaction
 #params.add('beta_dogs', value = beta, min = 0, max = 10000) # contact rate for dog-dog interaction
 #params.add('gamma_dogs', value = gamma, min = 0, max = 100000) # mean recovery rate for dog-dog interaction
 params.add('S0', value = S0, vary = False) # Initial number of susceptibles
@@ -386,12 +380,12 @@ ax.set_ylabel('Number of Infected')
 ax.yaxis.set_tick_params(length=0)
 ax.xaxis.set_tick_params(length=0)  
 ax.grid(b=True, which='major', c='w', lw=2, ls='-')
-ax.set_xticks(np.arange(2000,2021,2))
+ax.set_xticks(np.arange(2002,2021,2))
 #legend = ax.legend()
 #legend.get_frame().set_alpha(0.5)
 #for spine in ('top', 'right', 'bottom', 'left'):
 #    ax.spines[spine].set_visible(False)
-plt.title("Yunnan")
+plt.title("Tianjin")
 plt.show()
 
 #print(GuangdongPopData.shape)

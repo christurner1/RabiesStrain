@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Nov 18 11:02:32 2021
+Created on Thu Apr 14 12:22:11 2022
 
-@author: chris
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 18 10:56:37 2021
-
-@author: chris
+@author: Chris
 """
 
 
@@ -280,13 +273,13 @@ model.
 '''
 
 #Adjusting the data for this province
-YunnanData1 = np.delete(YunnanData, [0,1,2,3])
-YunnanPopData1 = np.delete(YunnanPopData, [0,1,2,3])
-# print(YunnanData1)
-# print(YunnanPopData1)
+YunnanData1 = np.delete(ShandongData, [0,1])
+YunnanPopData1 = np.delete(ShandongPopData, [0,1])
+# print(np.size(YunnanData1))
+# print(np.size(YunnanPopData1))
 # Using this to make each year in the data
-Time = np.linspace(2000, 2019, 20) #this would be my x data
-# t_span = (1996,2019)
+Time = np.linspace(1998, 2019, 22) #this would be my x data
+# print(np.size(Time))
 
 #%% Preliminaries prior to model validation.
 """
@@ -386,12 +379,12 @@ ax.set_ylabel('Number of Infected')
 ax.yaxis.set_tick_params(length=0)
 ax.xaxis.set_tick_params(length=0)  
 ax.grid(b=True, which='major', c='w', lw=2, ls='-')
-ax.set_xticks(np.arange(2000,2021,2))
+ax.set_xticks(np.arange(1998,2021,2))
 #legend = ax.legend()
 #legend.get_frame().set_alpha(0.5)
 #for spine in ('top', 'right', 'bottom', 'left'):
 #    ax.spines[spine].set_visible(False)
-plt.title("Yunnan")
+plt.title("Shandong")
 plt.show()
 
 #print(GuangdongPopData.shape)

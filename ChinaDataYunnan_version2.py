@@ -298,13 +298,14 @@ NH= np.average(YunnanPopData1 * 10000)
 
 # Initial number of infected and recovered individuals, I0 and R0.
 I0, R0 = YunnanData1[0], YunnanData1[0]
-ID0, RD0 = 394000, 0
+ID0, RD0 = 394000, 394000
 
 # Initial number of Suscepitble , S0
 S0 = NH - I0 - R0
 SD0 = 3940000
 
 ND = SD0 + ID0 + RD0
+N = ND + NH
 
 #The total dog and human population in Yunnan
 # N = NH+ND
@@ -312,27 +313,27 @@ ND = SD0 + ID0 + RD0
 y0 = [S0, I0, R0] #just placing the intial values in matrix form 
 
 # Birth rate and natural death rate for dogs
-birth = .73
-death = .26
+birth = 12
+death = 6
 
 # Contact rate, beta, and mean recovery rate, gamma.
-beta, gamma = 5, 1# average infection rate is 1-3 months in humans, death occurs 2-10 days after symptoms
-beta_dogs, gamma_dogs = 6, 65 #infection rate for dog-dog interaction, "recovery rate" for dog-dog interaction
+beta, gamma = 25, 25# average infection rate is 1-3 months in humans, death occurs 2-10 days after symptoms
+beta_dogs, gamma_dogs = 100, 100 #infection rate for dog-dog interaction, "recovery rate" for dog-dog interaction
 
 #%% 
 # Setting parameters. Note that we can place bounds on values if need be.
 params = Parameters()
-params.add('birth', value = birth, vary = False) # birth rate for dogs per year
-params.add('death', value = death, vary = False) # natural death rate for dogs per year
-params.add('beta', value = beta, min = 0) # contact rate for dog-human interaction
-params.add('gamma', value = gamma, min = 0) # mean recovery rate for dog-human interaction
+params.add('birth', value = birth, min = 0) # birth rate for dogs per year
+params.add('death', value = death, min = 0) # natural death rate for dogs per year
+params.add('beta', value = beta, min = 0, max = 10000) # contact rate for dog-human interaction
+params.add('gamma', value = gamma, min = 0, max = 10000) # mean recovery rate for dog-human interaction
 params.add('beta_dogs', value = beta_dogs, min = 0) # contact rate for dog-dog interaction
 params.add('gamma_dogs', value = gamma_dogs, min = 0) # mean recovery rate for dog-dog interaction
 params.add('S0', value = S0, vary = False) # Initial number of susceptibles
 params.add('I0', value = I0, vary = False) # Initial number of infectives
 params.add('R0', value =R0, vary = False) # Initial number of recovered, typically 0
-params.add('SD0', value = SD0, min = 5) # Initial number of susceptible dogs
-params.add('ID0', value = ID0, min = 1) # Initial number of infected dogs
+params.add('SD0', value = SD0, min = 0) # Initial number of susceptible dogs
+params.add('ID0', value = ID0, min = 0) # Initial number of infected dogs
 params.add('RD0', value =RD0, min = 0) # Initial number of "recovered" dogs, typically 0
 #%%
 def SIR(y, t, paras):
@@ -354,13 +355,13 @@ def SIR(y, t, paras):
         death = paras['death'].value
 
     except KeyError:
-        beta, gamma, beta_dogs, gamma_dogs = paras
+        beta, gamma, beta_dogs, gamma_dogs, birth, death = paras
         
     # the model equations
-    dSdt = -beta * S * ID/NH 
-    dIdt = beta * S * ID/NH  - gamma * I
+    dSdt = -beta * S * ID/N 
+    dIdt = beta * S * ID/N  - gamma * I
     dRdt = gamma * I
-    dSDdt = birth * ND - death * SD -beta_dogs * ID *SD /ND
+    dSDdt = birth * ND - death * SD - beta_dogs * ID *SD /ND
     dIDdt = beta_dogs * ID *SD/ND - gamma_dogs * ID
     dRDdt = gamma_dogs * ID
     return [dSdt, dIdt, dRdt, dSDdt, dIDdt, dRDdt]
@@ -408,7 +409,7 @@ ax.plot(Time, data_fitted, '-', color = 'k', linewidth=2)
 #ax.plot(Time, pop_fitted, '-', color = 'k', linewidth=2) 
 
 ax.set_xlabel('Year')
-ax.set_ylabel('Number')
+ax.set_ylabel('Number of Infected')
 #ax.set_ylim(0,15000)
 ax.yaxis.set_tick_params(length=0)
 ax.xaxis.set_tick_params(length=0)

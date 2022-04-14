@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Nov 18 11:02:32 2021
+Created on Tue Apr 12 20:21:38 2022
 
-@author: chris
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 18 10:56:37 2021
-
-@author: chris
+@author: Chris
 """
 
 
@@ -280,12 +273,12 @@ model.
 '''
 
 #Adjusting the data for this province
-YunnanData1 = np.delete(YunnanData, [0,1,2,3])
-YunnanPopData1 = np.delete(YunnanPopData, [0,1,2,3])
-# print(YunnanData1)
-# print(YunnanPopData1)
+ChongqingData1 = np.delete(ChongqingData, [0,1,2,3,4,5,6,7])
+ChongqingPopData1 = np.delete(ChongqingPopData, [0,1,2,3,4,5,6,7])
+# print(ChongqingData1)
+# print(ChongqingPopData1)
 # Using this to make each year in the data
-Time = np.linspace(2000, 2019, 20) #this would be my x data
+Time = np.linspace(2004, 2019, 16) #this would be my x data
 # t_span = (1996,2019)
 
 #%% Preliminaries prior to model validation.
@@ -294,17 +287,17 @@ There is probably a faster way to evaluate each province, but for now this is th
 """
 
 # Using the average population total for our N
-N = np.average(YunnanPopData1 * 10000) 
+N = np.average(ChongqingPopData1 * 10000) 
 
 # Initial number of infected and recovered individuals, I0 and R0.
-I0, R0 = YunnanData1[0], YunnanData1[0]
+I0, R0 = ChongqingData1[0], ChongqingData1[0]
 
 # Initial number of Suscepitble , S0
 S0 = N - I0 - R0
 
 y0 = [S0, I0, R0] #just placing the intial values in matrix form 
 # Contact rate, beta, and mean recovery rate, gamma.
-beta, gamma = 91.25/365 , 10/356# average infection rate is 1-3 months in humans, death occurs 2-10 days after symptoms
+beta, gamma = 15 , 15 # average infection rate is 1-3 months in humans, death occurs 2-10 days after symptoms
 beta_dogs, gamma_dogs = 91.25/365 , 10/356 #infection rate for dog-dog interaction, "recovery rate" for dog-dog interaction
 
 #%% 
@@ -361,11 +354,11 @@ def residual(ps, ts, infdata):
 # print(type(GuangxiData))
 
 # fit model
-results_infected = minimize(residual, params, args = (Time, YunnanData1), method = 'Nelder-Mead') 
+results_infected = minimize(residual, params, args = (Time, ChongqingData1), method = 'Nelder-Mead') 
 # results_pop = minimize(residual, params, args = (Time, GuangdongData), method = 'Nelder-Mead')
 
 # check results of the fit
-data_fitted = YunnanData1 + results_infected.residual.reshape(YunnanData1.shape)
+data_fitted = ChongqingData1 + results_infected.residual.reshape(ChongqingData1.shape)
 #pop_fitted = GuangxiPopData + results_pop.residual.reshape(GuangxiPopData.shape)
 
 # Plot the data on three separate curves for S(t), I(t) and R(t)
@@ -376,7 +369,7 @@ ax = fig.add_subplot(111, facecolor='#dddddd', axisbelow=True)
 #ax.plot(t, R, 'g', alpha=0.5, lw=2, label='Recovered with immunity')
 
 #ax.plot(Time, GuangdongPopData * 10000, 'o')
-ax.plot(Time, YunnanData1, 'o')
+ax.plot(Time, ChongqingData1, 'o')
 ax.plot(Time, data_fitted, '-', color = 'k', linewidth=2)
 #ax.plot(Time, pop_fitted, '-', color = 'k', linewidth=2) 
 
@@ -386,12 +379,12 @@ ax.set_ylabel('Number of Infected')
 ax.yaxis.set_tick_params(length=0)
 ax.xaxis.set_tick_params(length=0)  
 ax.grid(b=True, which='major', c='w', lw=2, ls='-')
-ax.set_xticks(np.arange(2000,2021,2))
+ax.set_xticks(np.arange(2003,2021,2))
 #legend = ax.legend()
 #legend.get_frame().set_alpha(0.5)
 #for spine in ('top', 'right', 'bottom', 'left'):
 #    ax.spines[spine].set_visible(False)
-plt.title("Yunnan")
+plt.title("Chongqing")
 plt.show()
 
 #print(GuangdongPopData.shape)

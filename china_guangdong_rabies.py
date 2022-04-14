@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Thu Oct 21 17:37:05 2021
@@ -302,8 +303,8 @@ beta, gamma = 91.25/365 , 10/356
 #%%
 # Setting parameters. Note that we can place bounds on values if need be.
 params = Parameters()
-params.add('beta', value = beta, min = 0, max = 10000) # contact rate
-params.add('gamma', value = gamma, min = 0, max = 10000) # mean recovery rate
+params.add('beta', value = beta, min = 0) # contact rate
+params.add('gamma', value = gamma, min = 0) # mean recovery rate
 params.add('S0', value = S0, vary = False) # Initial number of susceptibles
 params.add('I0', value = I0, vary = False) # Initial number of infectives
 params.add('R0', value =R0, vary = False) # Initial number of recovered, typically 0

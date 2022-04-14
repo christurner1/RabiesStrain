@@ -1,9 +1,8 @@
-
 # -*- coding: utf-8 -*-
 """
-Created on Thu Oct 21 17:37:05 2021
+Created on Tue Apr 12 20:18:11 2022
 
-@author: chris
+@author: Chris
 
 The purpose of this code is to apply a simple SIR model to the provincial rabies
 data and produce estimates of the model parameters over the time span of
@@ -108,7 +107,7 @@ def load_data():
 
     #
     # Using this to make each year in the data
-    Time = np.linspace(1996, 2019, 24) #this would be my x data
+    Time = np.linspace(2000, 2019, 20) #this would be my x data
 
     # Preliminaries prior to model validation.
 
@@ -116,7 +115,7 @@ def load_data():
     N = np.average(province_pop_data[province_name] * 10000)
 
     # Initial number of infected and recovered individuals, I0 and R0.
-    I0, R0 = province_data[province_name][0], province_data[province_name][0]
+    I0, R0 = province_data[province_name][0], 0
 
     # Initial number of Suscepitble , S0
     S0 = N - I0 - R0
@@ -129,8 +128,8 @@ def load_data():
 
     # Setting parameters. Note that we can place bounds on values if need be.
     params = Parameters() # Define as global variable initially
-    params.add('beta', value = beta, min = 0, max = 10000) # contact rate
-    params.add('gamma', value = gamma, min = 0, max = 10000) # mean recovery rate
+    params.add('beta', value = beta, min = 0, max =  10000 ) # contact rate
+    params.add('gamma', value = gamma, min = 0, max  = 10000) # mean recovery rate
     params.add('S0', value = S0, vary = False) # Initial number of susceptibles
     params.add('I0', value = I0, vary = False) # Initial number of infectives
     params.add('R0', value =R0, vary = False) # Initial number of recovered, typically 0
@@ -194,6 +193,7 @@ def main():
     #ax.set_ylim(0,15000)
     ax.yaxis.set_tick_params(length=0)
     ax.xaxis.set_tick_params(length=0)
+    ax.set_xticks(np.arange(2000,2021,2))
     ax.grid(visible=True, which='major', c='w', lw=2, ls='-')
 
     plt.title(province_name)
